@@ -25,7 +25,7 @@
 
 .roll {
     height: 50px;
-    width: 100px;
+    width: 150px;
     padding-bottom: 20px;
     font-family: 'Inter', sans-serif;
     font-size: 1.5rem;
@@ -34,4 +34,16 @@
 
 .dice.held {
     background-color: lightgray;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
 }

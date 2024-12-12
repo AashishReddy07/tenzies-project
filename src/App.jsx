@@ -1,9 +1,17 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import './App.css'
 import Die from './Die'
 
 export default function App() {
-  const [dice, setDice] = useState(generateAllNewDice())
+  const [dice, setDice] = useState(() => generateAllNewDice())
+  const buttonRef = useRef(null)
+
+  const gameWon = dice.every(dieObj => dieObj.isHeld) && 
+    dice.every(dieObj => dieObj.val === dice[0].val)
+
+  useEffect(() => {
+    gameWon && buttonRef.current.focus()
+    },[gameWon])
 
   function generateAllNewDice() {
     return new Array(10)
@@ -15,24 +23,25 @@ export default function App() {
   }
 
   function rollDice() {
-    setDice(dice.map(dieObj => 
+    !gameWon && setDice(dice.map(dieObj => 
       dieObj.isHeld ? 
         dieObj :
         { ...dieObj, val: Math.ceil(Math.random() * 6)}
     ))
+    gameWon && setDice(generateAllNewDice())
   }
 
   function hold(index) {
-    setDice(dice.map((dieObj, i) => {
-      if (index === i) {
-        return { ...dieObj, isHeld: !dieObj.isHeld }
-      }
-      return dieObj
-    }))
+    setDice(dice.map((dieObj, i) =>
+      (index === i) ? 
+        { ...dieObj, isHeld: !dieObj.isHeld } :
+        dieObj
+    ))
   }
 
   return (
     <main>
+      <div aria-live="polite" className=".sr-only">Congrats! You won the game. Click on new game button to start new game</div>
       <div className="dice-container">
         {dice.map((dieObj, index) => (
           <Die 
@@ -43,7 +52,7 @@ export default function App() {
           />
         ))}
       </div>
-      <button className="roll" onClick={rollDice}>Roll</button>
+      <button ref={buttonRef} className="roll" onClick={rollDice}>{gameWon ? "New Game" : "Roll"}</button>
     </main>
  )
 }
