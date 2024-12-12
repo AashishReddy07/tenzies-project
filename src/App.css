@@ -22,3 +22,16 @@
     width: 100%;
     height: auto;
 }
+
+.roll {
+    height: 50px;
+    width: 100px;
+    padding-bottom: 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.dice.held {
+    background-color: lightgray;
+}
